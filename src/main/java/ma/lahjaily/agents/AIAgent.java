@@ -1,5 +1,6 @@
 package ma.lahjaily.agents;
 
+import ma.lahjaily.tools.AITools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Flux;
 public class AIAgent {
     private ChatClient chatClient;
 
-    public AIAgent(ChatClient.Builder builder, ChatMemory memory) {
+    public AIAgent(ChatClient.Builder builder, ChatMemory memory, AITools tools) {
         this.chatClient = builder
                 .defaultSystem("""
                         Vous un assistant qui se charge de répondre aux question
@@ -20,6 +21,7 @@ public class AIAgent {
                         """)
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(memory).build())
+                .defaultTools(tools)
                 .build();
     }
 
