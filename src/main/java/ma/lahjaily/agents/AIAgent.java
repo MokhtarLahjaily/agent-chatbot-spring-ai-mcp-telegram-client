@@ -3,11 +3,10 @@ package ma.lahjaily.agents;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 
@@ -30,15 +29,12 @@ public class AIAgent {
                         """)
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(memory).build())
-                .defaultAdvisors(new SimpleLoggerAdvisor())
                 .defaultToolCallbacks(tools)
+
                 .build();
     }
-
-    @GetMapping("/chat")
-    public String askAgent(String query) {
-        return chatClient.prompt()
-                .user(query)
+    public String askAgent(Prompt prompt) {
+        return chatClient.prompt(prompt)
                 .call().content();
     }
 }

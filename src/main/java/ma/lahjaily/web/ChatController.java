@@ -2,8 +2,10 @@ package ma.lahjaily.web;
 
 
 import ma.lahjaily.agents.AIAgent;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -17,7 +19,7 @@ public class ChatController {
     }
 
     @GetMapping(value = "/chat", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String chat(String query) {
-        return aiAgent.askAgent(query);
+    public String chat(@RequestParam(name = "query") String query) {
+        return aiAgent.askAgent(new Prompt(query));
     }
 }
